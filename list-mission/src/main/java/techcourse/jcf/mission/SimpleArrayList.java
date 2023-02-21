@@ -2,7 +2,7 @@ package techcourse.jcf.mission;
 
 import java.util.Arrays;
 
-public class CustomList implements SimpleList {
+public class SimpleArrayList implements SimpleList {
 
     private static final int MIN_INDEX = 0;
     private static final int MIN_CAPACITY = 10;
@@ -10,7 +10,7 @@ public class CustomList implements SimpleList {
     private String[] storage;
     private int size;
 
-    public CustomList() {
+    public SimpleArrayList() {
         storage = EMPTY_STORAGE;
         this.size = 0;
     }
