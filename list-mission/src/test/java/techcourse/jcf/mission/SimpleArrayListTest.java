@@ -53,7 +53,7 @@ class SimpleArrayListTest {
                 .isEqualTo("hi");
 
         assertThat(simpleArrayList.set(0, "hihi"))
-                .isEqualTo("hihi");
+                .isEqualTo("hi");
 
         String afterValue = simpleArrayList.get(0);
 

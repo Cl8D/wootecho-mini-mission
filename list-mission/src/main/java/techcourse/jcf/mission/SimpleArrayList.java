@@ -48,8 +48,9 @@ public class SimpleArrayList implements SimpleList {
     @Override
     public String set(final int index, final String value) {
         validateIndexRange(index);
+        String item = storage[index];
         storage[index] = value;
-        return value;
+        return item;
     }
 
     @Override
