@@ -47,7 +47,7 @@ class SimpleArrayListTest {
     @Test
     @DisplayName("유효한 범위의 위치에 있는 값을 수정하면, 해당 인덱스의 값이 변화한다.")
     void set_success_test() {
-        String beforeValue = simpleArrayList.get(0);
+        String beforeValue = (String) simpleArrayList.get(0);
 
         assertThat(beforeValue)
                 .isEqualTo("hi");
@@ -55,7 +55,7 @@ class SimpleArrayListTest {
         assertThat(simpleArrayList.set(0, "hihi"))
                 .isEqualTo("hi");
 
-        String afterValue = simpleArrayList.get(0);
+        String afterValue = (String) simpleArrayList.get(0);
 
         assertThat(afterValue)
                 .isEqualTo("hihi");

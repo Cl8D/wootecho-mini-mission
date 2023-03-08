@@ -2,12 +2,12 @@ package techcourse.jcf.mission;
 
 import java.util.Arrays;
 
-public class SimpleArrayList implements SimpleList {
+public class SimpleArrayList<E> implements SimpleList<E> {
 
     private static final int MIN_INDEX = 0;
     private static final int MIN_CAPACITY = 10;
-    private static final String[] EMPTY_STORAGE = {};
-    private String[] storage;
+    private static final Object[] EMPTY_STORAGE = {};
+    private Object[] storage;
     private int size;
 
     public SimpleArrayList() {
@@ -16,13 +16,13 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public boolean add(final String value) {
+    public boolean add(final E value) {
         addLast(value);
         return true;
     }
 
     @Override
-    public void add(final int index, final String value) {
+    public void add(final int index, final E value) {
         if (index < MIN_INDEX || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -46,26 +46,26 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public String set(final int index, final String value) {
+    public E set(final int index, final E value) {
         validateIndexRange(index);
-        String item = storage[index];
+        Object item = storage[index];
         storage[index] = value;
-        return item;
+        return (E) item;
     }
 
     @Override
-    public String get(final int index) {
+    public E get(final int index) {
         validateIndexRange(index);
-        return storage[index];
+        return (E) storage[index];
     }
 
     @Override
-    public boolean contains(final String value) {
+    public boolean contains(final E value) {
         return indexOf(value) >= 0;
     }
 
     @Override
-    public int indexOf(final String value) {
+    public int indexOf(final E value) {
         for (int i = 0; i < size; i++) {
             if (storage[i].equals(value)) {
                 return i;
@@ -85,7 +85,7 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public boolean remove(final String value) {
+    public boolean remove(final E value) {
         int targetIndex = indexOf(value);
         if (targetIndex == -1) {
             return false;
@@ -95,10 +95,10 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public String remove(final int index) {
+    public E remove(final int index) {
         validateIndexRange(index);
 
-        String removedElement = storage[index];
+        E removedElement = (E) storage[index];
         // GC에서 메모리 수거를 하도록 하기 위해서 null로 명시적 선언을 해준다.
         storage[index] = null;
 
@@ -130,7 +130,7 @@ public class SimpleArrayList implements SimpleList {
         }
     }
 
-    private void addLast(final String value) {
+    private void addLast(final E value) {
         if (size == storage.length) {
             resize();
         }
@@ -142,7 +142,7 @@ public class SimpleArrayList implements SimpleList {
 
         // 비어 있을 경우
         if (capacity == 0) {
-            storage = new String[MIN_CAPACITY];
+            storage = new Object[MIN_CAPACITY];
             return;
         }
 

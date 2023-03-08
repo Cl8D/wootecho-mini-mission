@@ -3,12 +3,12 @@ package techcourse.jcf.mission;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleLinkedList implements SimpleList {
+public class SimpleLinkedList<E> implements SimpleList<E> {
 
     private static final int MIN_INDEX = 0;
 
-    private Node first;
-    private Node last;
+    private Node<E> first;
+    private Node<E> last;
     private int size;
 
     public SimpleLinkedList() {
@@ -18,13 +18,13 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public boolean add(final String value) {
+    public boolean add(final E value) {
         addLast(value);
         return true;
     }
 
     @Override
-    public void add(final int index, final String value) {
+    public void add(final int index, final E value) {
         if (index < MIN_INDEX || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -40,14 +40,14 @@ public class SimpleLinkedList implements SimpleList {
         }
 
         // 추가하려는 노드
-        Node node = new Node(value);
+        Node<E> node = new Node(value);
 
         // 추가하려던 위치의 이전 노드
-        Node prevNode = getNodeByIndex(index - 1);
+        Node<E> prevNode = getNodeByIndex(index - 1);
         prevNode.next = node;
 
         // 추가하려는 위치의 노드
-        Node nextNode = prevNode.next;
+        Node<E> nextNode = prevNode.next;
         nextNode.prev = node;
 
         node.prev = prevNode;
@@ -56,28 +56,28 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public String set(final int index, final String value) {
-        Node targetNode = getNodeByIndex(index);
-        String targetItem = targetNode.item;
+    public E set(final int index, final E value) {
+        Node<E> targetNode = getNodeByIndex(index);
+        E targetItem = (E) targetNode.item;
         targetNode.item = value;
         return targetItem;
     }
 
     @Override
-    public String get(final int index) {
-        return getNodeByIndex(index).item;
+    public E get(final int index) {
+        return (E) getNodeByIndex(index).item;
     }
 
     @Override
-    public boolean contains(final String value) {
+    public boolean contains(final E value) {
         return indexOf(value) != -1;
     }
 
     @Override
-    public int indexOf(final String value) {
+    public int indexOf(final E value) {
         int index = 0;
 
-        Node target = first;
+        Node<E> target = first;
         while (target != null) {
             if (target.item.equals(value)) {
                 return index;
@@ -100,9 +100,9 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public boolean remove(final String value) {
-        Node target = first;
-        Node prevNode = first;
+    public boolean remove(final E value) {
+        Node<E> target = first;
+        Node<E> prevNode = first;
 
         // 해당 value와 일치하는 노드 찾기
         while (target != null) {
@@ -123,7 +123,7 @@ public class SimpleLinkedList implements SimpleList {
         }
 
         // 제거 대상의 다음 노드
-        Node nextNode = target.next;
+        Node<E> nextNode = target.next;
         if (nextNode != null) {
             nextNode.prev = prevNode;
             prevNode.next = null;
@@ -136,24 +136,24 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public String remove(final int index) {
+    public E remove(final int index) {
         validateIndexRange(index);
 
         if (index == 0) {
-            String firstItem = first.item;
+            E firstItem = (E) first.item;
             removeFirst();
             return firstItem;
         }
 
         // 제거 대상의 이전 노드
-        Node prevNode = getNodeByIndex(index - 1);
+        Node<E> prevNode = getNodeByIndex(index - 1);
         // 제거 대상 노드
-        Node targetNode = prevNode.next;
+        Node<E> targetNode = prevNode.next;
         // 제거 대상의 다음 노드
-        Node nextNode = targetNode.next;
+        Node<E> nextNode = targetNode.next;
 
         // 제거 전에 미리 저장해둔 제거 대상 아이템
-        String targetItem = targetNode.item;
+        E targetItem = (E) targetNode.item;
 
         prevNode.next = null;
         targetNode.prev = null;
@@ -175,8 +175,8 @@ public class SimpleLinkedList implements SimpleList {
 
     @Override
     public void clear() {
-        for (Node target = first; target != null; ) {
-            Node nextNode = target.next;
+        for (Node<E> target = first; target != null; ) {
+            Node<E> nextNode = target.next;
             target.item = null;
             target.prev = null;
             target.next = null;
@@ -186,11 +186,11 @@ public class SimpleLinkedList implements SimpleList {
         size = 0;
     }
 
-    private Node getNodeByIndex(final int index) {
+    private Node<E> getNodeByIndex(final int index) {
         validateIndexRange(index);
 
         // 그 다음 것으로 이동하면서 해당 노드 발견하기
-        Node target = first;
+        Node<E> target = first;
         for (int i = 0; i < index; i++) {
             target = target.next;
         }
@@ -204,8 +204,8 @@ public class SimpleLinkedList implements SimpleList {
         }
     }
 
-    private void addLast(final String value) {
-        Node newNode = new Node(value);
+    private void addLast(final E value) {
+        Node<E> newNode = new Node(value);
 
         // 사이즈가 0이면 가장 처음에 넣어주기
         if (size == 0) {
@@ -221,8 +221,8 @@ public class SimpleLinkedList implements SimpleList {
         size++;
     }
 
-    private void addFirst(final String value) {
-        Node current = new Node(value);
+    private void addFirst(final E value) {
+        Node<E> current = new Node(value);
         // 현재 노드의 다음 상태에 대해서 새로 들어온 노드 연결해주기.
         current.next = first;
 
@@ -247,7 +247,7 @@ public class SimpleLinkedList implements SimpleList {
         }
 
         // 헤드 위치에 있는 노드의 다음 노드 임시 저장
-        Node nextNode = first.next;
+        Node<E> nextNode = first.next;
 
         first.item = null;
         first.next = null;
@@ -268,18 +268,18 @@ public class SimpleLinkedList implements SimpleList {
         }
     }
 
-    private static class Node {
-        String item;
-        Node prev;
-        Node next;
+    private static class Node<E> {
+        E item;
+        Node<E> prev;
+        Node<E> next;
 
-        public Node(final String item, final Node prev, final Node next) {
+        public Node(final E item, final Node<E> prev, final Node<E> next) {
             this.item = item;
             this.prev = prev;
             this.next = next;
         }
 
-        public Node(final String item) {
+        public Node(final E item) {
             this.item = item;
         }
 
@@ -287,7 +287,7 @@ public class SimpleLinkedList implements SimpleList {
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            final Node node = (Node) o;
+            final Node<E> node = (Node<E>) o;
             return Objects.equals(item, node.item) && Objects.equals(prev, node.prev) && Objects.equals(next, node.next);
         }
 
